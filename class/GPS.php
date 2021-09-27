@@ -141,5 +141,16 @@ class GPS
     public function getidBateau(){
         return $this->_idBateau;
     }
+
+    //Fonction qui permet de récupérer les trames
+    public function recupetrames(){
+
+        $request = $this->_bdd->query("SELECT latitude, longitude FROM gps");
+        while($Tab = $request->fetch())
+        {
+            "Latitude" ?> : <? $Tab['latitude'];
+            "Longitude" ?> : <? $Tab['longitude'];
+        }
+    }
 }
 ?>
