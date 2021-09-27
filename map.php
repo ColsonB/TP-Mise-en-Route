@@ -28,7 +28,6 @@
         <link href="css/assets/dist/css/bootstrap.min.css" rel="stylesheet">
         <link href="css/headers.css" rel="stylesheet">
         <link href="css/map.css" rel="stylesheet">
-        <style type="text/css"></style>
         <title>Carte</title>
         <link rel="icon" href="image/logo_providence.png" />
     </head>
@@ -75,7 +74,8 @@
                         $request = $BDD->query("SELECT gps.id_bateau, gps.latitude, gps.longitude, bateau.id , bateau.nom FROM bateau, gps WHERE gps.id_bateau = bateau.id");
                         while ($tab = $request->fetch()){
                     ?>
-                        "<?= $tab['nom'] ?>":{
+                        "<?= $tab['latitude'] ?>
+                         <?= $tab['longitude']?>":{
                             "lat": <?= $tab['latitude'] ?>,
                             "lon": <?= $tab['longitude'] ?>,
                         },
@@ -117,6 +117,7 @@
                     initMap();
                 };
             </script>
+
         </div>
     </body>
 </html>

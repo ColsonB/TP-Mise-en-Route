@@ -150,10 +150,14 @@ class GPS
     public function recupetrames(){
 
         $request = $this->_bdd->query("SELECT latitude, longitude FROM gps");
-        while($Trame = $request->fetch())
+        while($Tab = $request->fetch())
         {
-            $Trame['latitude'];
-            $Trame['longitude'];
+            ?>
+        <tr>
+            <td><?=$Tab['latitude'];?></td>
+            <td><?=$Tab['longitude'];?></td>
+        </tr>
+            <?php
         }
     }
 }
