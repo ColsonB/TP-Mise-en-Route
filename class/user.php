@@ -1,7 +1,7 @@
 <?php
 class user
 {
-    //Private
+    // Private
     private $_id;
     private $_nom;
     private $_prenom;
@@ -11,13 +11,13 @@ class user
     private $_BDD;
 
     
-    //Public
+    // Public
     public function __construct($BDD)
     {
         $this->_BDD = $BDD;
     }
 
-    //Fonction qui permet de collecter tout les information d'un user elle prend en parametre l'id et return rien
+    // Fonction qui permet de collecter tout les information d'un user elle prend en parametre l'id et return rien
     public function getuser($id)
     {
         $request = $this->_BDD->query("SELECT * FROM `user` WHERE `id` = '$id'");
@@ -30,7 +30,7 @@ class user
         $this->_mdp = $data['mdp'];
     }
 
-    //Fonction qui permet au user de se connecter, elle attend en paramétre un login et un mdp
+    // Fonction qui permet au user de se connecter, elle attend en paramétre un login et un mdp
     public function connexion($login, $mdp)
     {
         $requser = $this->_BDD->prepare("SELECT * FROM `user` WHERE `pseudo` = ? AND `mdp` = ?");
@@ -51,7 +51,7 @@ class user
         }
     }
 
-    //Fonction qqui permet d'update un user elle attend en paramettre un login, un mdp, un nom et un prénom
+    // Fonction qui permet d'update un user elle attend en paramettre un login, un mdp, un nom et un prénom
     public function updateUser($login, $mdp, $nom, $prenom, $confmdp, $admin)
     {
         $requeteuser = $this->_BDD->prepare("SELECT * FROM user WHERE pseudo = ?");
@@ -80,13 +80,13 @@ class user
         }
     }
 
-    //Fonction qui permet au user de se déconnecter
+    // Fonction qui permet au user de se déconnecter
     public function deconnexion()
     {
         session_destroy();
         echo '<meta http-equiv="refresh" content="0">';
     }
-    //Fonction qui permet au user de s'inscrire, elle attend en commentaire un login, un mdp, un nom et un prénom
+    // Fonction qui permet au user de s'inscrire, elle attend en commentaire un login, un mdp, un nom et un prénom
     public function inscription($login, $mdp, $nom, $prenom, $confmdp)
     {
         $requeteuser = $this->_BDD->prepare("SELECT * FROM user WHERE pseudo = ?");
@@ -104,7 +104,7 @@ class user
             return "Se login est déja utiliser par une autre personne";
         }
     }
-    //Fonction qui donner tout les user en base de donner en prendre rien en parametre et return rien
+    // Fonction qui donner tout les user en base de donner en prendre rien en parametre et return rien
     public function giveuser()
     {
         $request = $this->_BDD->query("SELECT * FROM user WHERE 1");
@@ -135,38 +135,38 @@ class user
         }
     }
 
-    //Fonction qui permet de suprimer des user en base de donner elle prend en parametre l'id du user
+    // Fonction qui permet de suprimer des user en base de donner elle prend en parametre l'id du user
     public function removeUser($id)
     {
         $this->_BDD->query("DELETE FROM `user` WHERE `id` = '$id'");
     }
 
-    //Foncion qui retourne le nom du user
+    // Foncion qui retourne le nom du user
     public function getnom()
     {
         return $this->_nom;
     }
-    //Fonction qui return le prenom du user
+    // Fonction qui return le prenom du user
     public function getprenom()
     {
         return $this->_prenom;
     }
-    //Fonction qui retourn le login du user
+    // Fonction qui retourn le login du user
     public function getlogin()
     {
         return $this->_login;
     }
-    //Fonction qui returne l'id du user
+    // Fonction qui returne l'id du user
     public function getid()
     {
         return $this->_id;
     }
-    //Fonction qui retourne le statue admin 
+    // Fonction qui retourne le statue admin 
     public function getadmin()
     {
         return $this->_admin;
     }
-    //Fonction qui retourne le mots de passe
+    // Fonction qui retourne le mots de passe
     public function getmdp()
     {
         return $this->_mdp;

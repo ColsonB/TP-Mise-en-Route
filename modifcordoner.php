@@ -35,9 +35,7 @@
     <body class="text-center">
         <main class="form-signin">
             <form method="POST">
-                <h1 class="h3 mb-3 fw-normal">Modification Bateau
-                <?= $bateau->getNomBateau() ?>
-                </h1>
+                <h1 class="h3 mb-3 fw-normal">Modification Bateau<?= $bateau->getNomBateau() ?></h1>
                 <div class="form-floating">
                     <input name="name" type="text" class="form-control" id="floatingInput" placeholder="bateau" value="<?= $bateau->getNomBateau() ?>" required>
                     <label for="floatingInput">Nom</label>

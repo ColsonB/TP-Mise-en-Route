@@ -27,37 +27,8 @@
         <!-- Bootstrap core CSS -->
         <link href="css/assets/dist/css/bootstrap.min.css" rel="stylesheet">
         <link href="css/headers.css" rel="stylesheet">
-        <style type="text/css">
-            #map{
-                /* la carte DOIT avoir une hauteur sinon elle n'apparaît pas */
-                height: 600px;
-                width: 1000px;
-            }
-
-            .centrer{
-                position: absolute;
-                /* postulat de départ */
-                top: 55%;
-                left: 50%;
-                /* à 50%/50% du parent référent */
-                transform: translate(-50%, -50%);
-                /* décalage de 50% de sa propre taille */
-            }
-
-            .bd-placeholder-img{
-                font-size: 1.125rem;
-                text-anchor: middle;
-                -webkit-user-select: none;
-                -moz-user-select: none;
-                user-select: none;
-            }
-
-            @media (min-width: 768px){
-                .bd-placeholder-img-lg{
-                    font-size: 3.5rem;
-                }
-            }
-        </style>
+        <link href="css/map.css" rel="stylesheet">
+        <style type="text/css"></style>
         <title>Carte</title>
         <link rel="icon" href="image/logo_providence.png" />
     </head>
@@ -67,7 +38,6 @@
                 <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
                     <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none"></a>
                     <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-                        <li><a href="accueil.php" class="nav-link px-2 link-secondary">Home</a></li>
                         <li><a href="map.php" class="nav-link px-2 link-dark">Map</a></li>
                         <?php
                             if ($User->getadmin() == 1){
@@ -136,7 +106,7 @@
                         });
                         var marker = L.marker([villes[ville].lat, villes[ville].lon],{
                             icon: myIcon
-                        }); // pas de addTo(macarte), l'affichage sera géré par la bibliothèque des clusters
+                        }); // Pas de addTo(macarte), l'affichage sera géré par la bibliothèque des clusters
                         marker.bindPopup(ville);
                         markerClusters.addLayer(marker); // Nous ajoutons le marqueur aux groupes
                     }
