@@ -74,8 +74,8 @@
                         $request = $BDD->query("SELECT gps.id_bateau, gps.latitude, gps.longitude, bateau.id , bateau.nom FROM bateau, gps WHERE gps.id_bateau = bateau.id");
                         while ($tab = $request->fetch()){
                     ?>
-                        "<?= $tab['latitude'] ?>
-                         <?= $tab['longitude']?>":{
+                        "<?= $tab['latitude']; ?>
+                         <?= $tab['longitude'];?>":{
                             "lat": <?= $tab['latitude'] ?>,
                             "lon": <?= $tab['longitude'] ?>,
                         },

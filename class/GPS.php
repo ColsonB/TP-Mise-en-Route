@@ -117,8 +117,21 @@ class GPS
         };
         </script>
         <?php
-    } 
-}
+        } 
+    }
+
+    public function recupetrames(){
+
+        $request = $this->_bdd->query("SELECT latitude, longitude FROM gps");
+        while($Tab = $request->fetch()){
+            ?>
+        <tr>
+            <td><?=$Tab['latitude'];?></td>
+            <td><?=$Tab['longitude'];?></td>
+        </tr>
+            <?php
+        }
+    }
 
     // Fonction qui retourne latitude
     public function getlatitude()
@@ -146,19 +159,5 @@ class GPS
         return $this->_idBateau;
     }
 
-    // Fonction qui permet de récupérer les trames
-    public function recupetrames(){
-
-        $request = $this->_bdd->query("SELECT latitude, longitude FROM gps");
-        while($Tab = $request->fetch())
-        {
-            ?>
-        <tr>
-            <td><?=$Tab['latitude'];?></td>
-            <td><?=$Tab['longitude'];?></td>
-        </tr>
-            <?php
-        }
-    }
 }
 ?>
