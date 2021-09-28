@@ -22,13 +22,13 @@ class GPS
         $this->_bdd->query("INSERT INTO `gps`(`id_bateau`, `latitude`, `longitude`) VALUES ('$this->_idBateau','$latitude','$longitude')");
     }
 
-    // Fonction qui permet d'update le nom du bateau elle prend en paramatre le nouveau nom
+    // Fonction qui permet d'update le nom du bateau elle prend en paramètre le nouveau nom
     public function updateBateau($nom){
         $this->_bdd->query("UPDATE `bateau` SET `nom`='$nom' WHERE `id` ='$this->_idBateau'");
     }
 
 
-    // Fonction qui permet de récuper l'id du bateau elle prend en parametre l'id du bateau et return rien
+    // Fonction qui permet de récuper l'id du bateau elle prend en paramètre l'id du bateau et return rien
     public function getbateau($id)
     {
         $idbateau = $this->_bdd->query("SELECT * FROM `bateau` WHERE `id` = '$id'");
@@ -37,7 +37,7 @@ class GPS
         $this->_nomBateau = $data["nom"];
     }
     
-    // Fonction qui donne les cordonner et le bateau elle prend en paramettre l'id de la cordoner
+    // Fonction qui donne les coordonnées et le bateau elle prend en paramètre l'id de la coordonnées
     public function getbateauCordonner($id)
     {
         $idbateau = $this->_bdd->query("SELECT gps.`id`, gps.id_bateau, gps.latitude, gps.longitude, bateau.nom FROM gps, bateau WHERE gps.id_bateau = bateau.id AND gps.id = '$id'");
@@ -58,13 +58,13 @@ class GPS
     }
     
 
-    // Fonction qui permet de suprimer des bateau en base elle attend en parametre l'id du bateau
+    // Fonction qui permet de supprimer des bateau en base elle attend en paramètre l'id du bateau
     public function removeBateau($id)
     {
         $this->_bdd->query("DELETE FROM `bateau` WHERE `id` ='$id'");
     }
 
-    // Fonction qui permet de suprimer des coordoner en base elle attend en parametre l'id de la cordonner
+    // Fonction qui permet de supprimer des coordonées en base elle attend en paramètre l'id de la coordonnées
     public function removeGPS($id)
     {
         $this->_bdd->query("DELETE FROM `gps` WHERE `id` = '$id'");
@@ -79,7 +79,7 @@ class GPS
         $this->_longitude = $data['longitude'];
     }
 
-    // Fonction qui donner les cordoner d'un bateau et le nom du bateau dans un tableau pour la page admin
+    // Fonction qui donne les coordonnées d'un bateau et le nom du bateau dans un tableau pour la page admin
     public function givecoordonerplsunom()
     {
         $request = $this->_bdd->query("SELECT gps.`id`, gps.id_bateau, gps.latitude, gps.longitude, gps.heure, gps.altitude, bateau.nom FROM gps, bateau WHERE gps.id_bateau = bateau.id ORDER BY `gps`.`id` DESC");
@@ -105,21 +105,23 @@ class GPS
         <?php
         }
     }
-    // Fonction qui permet les les marquer sur une carte elle prendre rien en parametre
+    
+    // Fonction qui permet de mettre les marqueurs sur une carte elle prendre rien en paramètre
     public function afficheMarker(){
         
         $request = $this->_bdd->query("SELECT gps.`id`, gps.id_bateau, gps.latitude, gps.longitude, bateau.nom FROM gps, bateau WHERE gps.id_bateau = bateau.id ORDER BY `gps`.`id` DESC");
         while ($tab = $request->fetch()){ ?>
         <script> 
-        "<?= $tab['nom'] ?>":{
-            "lat": <?= $tab['latitude'] ?>;
-            "lon": <?= $tab['longitude'] ?>;
-        };
+            "<?= $tab['nom'] ?>":{
+                "lat": <?= $tab['latitude'] ?>;
+                "lon": <?= $tab['longitude'] ?>;
+            };
         </script>
         <?php
         } 
     }
 
+    // Fonction qui permet de récupérer des trames
     public function recupetrames(){
 
         $request = $this->_bdd->query("SELECT latitude, longitude FROM gps");
@@ -133,17 +135,29 @@ class GPS
         }
     }
 
-    // Fonction qui retourne latitude
+    public function ajoutgps($name, $lat, $long, $hour, $alt)
+    {
+        $requeteuser = $this->_BDD->prepare("SELECT * FROM user WHERE pseudo = ?");
+        $requeteuser->execute(array($name));
+        $userExist = $requeteuser->rowCount();
+        if ($userExist != 1) {
+            $req = "INSERT INTO `gps`(`nom`, `latitude`, `longitude`, `heure`, `altitude`) VALUES ('$name', '$lat', '$long', '$hour', '$alt')";
+            $this->_BDD->query($req);
+            return "ajout réussite";
+        } 
+    }
+
+    // Fonction qui return latitude
     public function getlatitude()
     {
         return $this->_latitude;
     }
-    // Fonction qui retourne longitude
+    // Fonction qui return longitude
     public function getlongitude()
     {
         return $this->_longitude;
     }
-    // Fonction qui retourne le nom du bateau
+    // Fonction qui return le nom du bateau
 
     public function getNomBateau(){
         return $this->_nomBateau;

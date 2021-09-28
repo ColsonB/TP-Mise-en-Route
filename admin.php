@@ -115,6 +115,7 @@
                             </div>
                         </div>
                     </div>
+                    <input type="button" value="Ajouter" class="w-100 btn btn-lg btn-primary" onClick="window.location.href='ajoutgps.php'" />
                     <table class="table table-striped table-hover">
                         <thead>
                             <tr>

@@ -51,7 +51,7 @@ class user
         }
     }
 
-    // Fonction qui permet d'update un user elle attend en paramettre un login, un mdp, un nom et un prénom
+    // Fonction qui permet d'update un user elle attend en paramètre un login, un mdp, un nom et un prénom
     public function updateUser($login, $mdp, $nom, $prenom, $confmdp, $admin)
     {
         $requeteuser = $this->_BDD->prepare("SELECT * FROM user WHERE pseudo = ?");
@@ -86,6 +86,7 @@ class user
         session_destroy();
         echo '<meta http-equiv="refresh" content="0">';
     }
+
     // Fonction qui permet au user de s'inscrire, elle attend en commentaire un login, un mdp, un nom et un prénom
     public function inscription($login, $mdp, $nom, $prenom, $confmdp)
     {
@@ -104,7 +105,8 @@ class user
             return "Se login est déja utiliser par une autre personne";
         }
     }
-    // Fonction qui donner tout les user en base de donner en prendre rien en parametre et return rien
+
+    // Fonction qui donne tout les user en base de données en prendre rien en parametre et return rien
     public function giveuser()
     {
         $request = $this->_BDD->query("SELECT * FROM user WHERE 1");
@@ -135,13 +137,13 @@ class user
         }
     }
 
-    // Fonction qui permet de suprimer des user en base de donner elle prend en parametre l'id du user
+    // Fonction qui permet de supprimer des user en base de données elle prend en paramètre l'id du user
     public function removeUser($id)
     {
         $this->_BDD->query("DELETE FROM `user` WHERE `id` = '$id'");
     }
 
-    // Foncion qui retourne le nom du user
+    // Foncion qui return le nom du user
     public function getnom()
     {
         return $this->_nom;
@@ -151,22 +153,22 @@ class user
     {
         return $this->_prenom;
     }
-    // Fonction qui retourn le login du user
+    // Fonction qui return le login du user
     public function getlogin()
     {
         return $this->_login;
     }
-    // Fonction qui returne l'id du user
+    // Fonction qui return l'id du user
     public function getid()
     {
         return $this->_id;
     }
-    // Fonction qui retourne le statue admin 
+    // Fonction qui return le statue admin 
     public function getadmin()
     {
         return $this->_admin;
     }
-    // Fonction qui retourne le mots de passe
+    // Fonction qui return le mots de passe
     public function getmdp()
     {
         return $this->_mdp;

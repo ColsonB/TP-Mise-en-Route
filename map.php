@@ -74,11 +74,11 @@
                         $request = $BDD->query("SELECT gps.latitude, gps.longitude, bateau.nom FROM bateau, gps WHERE gps.id_bateau = bateau.id");
                         while ($tab = $request->fetch()){
                     ?>
-                        "<?= $tab['nom']; ?>
-                         <?= $tab['latitude']; ?>
-                         <?= $tab['longitude'];?>":{
-                            "lat" : <?= $tab['latitude'] ?>,
-                            "lon" : <?= $tab['longitude'] ?>,
+                        " Nom : <?= $tab['nom'];?>
+                         Latitude : <?= $tab['latitude'];?>
+                         Longitude : <?= $tab['longitude'];?>":{
+                            "lat" : <?= $tab['latitude']?>,
+                            "lon" : <?= $tab['longitude']?>,
                         },
                     <?php } ?>
                 };
@@ -101,7 +101,7 @@
                         // Nous définissons l'icône à utiliser pour le marqueur, sa taille affichée (iconSize), sa position (iconAnchor) et le décalage de son ancrage (popupAnchor)
                         var myIcon = L.icon({
                             iconUrl: iconBase + "marker_bateau.png",
-                            iconSize: [50, 50],
+                            iconSize: [70, 70],
                             iconAnchor: [25, 50],
                             popupAnchor: [-3, -76],
                         });
