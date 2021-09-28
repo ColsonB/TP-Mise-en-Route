@@ -135,18 +135,6 @@ class GPS
         }
     }
 
-    public function ajoutgps($name, $lat, $long, $hour, $alt)
-    {
-        $requeteuser = $this->_BDD->prepare("SELECT * FROM user WHERE pseudo = ?");
-        $requeteuser->execute(array($name));
-        $userExist = $requeteuser->rowCount();
-        if ($userExist != 1) {
-            $req = "INSERT INTO `gps`(`nom`, `latitude`, `longitude`, `heure`, `altitude`) VALUES ('$name', '$lat', '$long', '$hour', '$alt')";
-            $this->_BDD->query($req);
-            return "ajout réussite";
-        } 
-    }
-
     // Fonction qui return latitude
     public function getlatitude()
     {
