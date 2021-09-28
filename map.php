@@ -71,13 +71,14 @@
                 // Nous initialisons une liste de marqueurs
                 var villes ={
                     <?php
-                        $request = $BDD->query("SELECT gps.id_bateau, gps.latitude, gps.longitude, bateau.id , bateau.nom FROM bateau, gps WHERE gps.id_bateau = bateau.id");
+                        $request = $BDD->query("SELECT gps.latitude, gps.longitude, bateau.nom FROM bateau, gps WHERE gps.id_bateau = bateau.id");
                         while ($tab = $request->fetch()){
                     ?>
-                        "<?= $tab['latitude']; ?>
+                        "<?= $tab['nom']; ?>
+                         <?= $tab['latitude']; ?>
                          <?= $tab['longitude'];?>":{
-                            "lat": <?= $tab['latitude'] ?>,
-                            "lon": <?= $tab['longitude'] ?>,
+                            "lat" : <?= $tab['latitude'] ?>,
+                            "lon" : <?= $tab['longitude'] ?>,
                         },
                     <?php } ?>
                 };
@@ -106,7 +107,7 @@
                         });
                         var marker = L.marker([villes[ville].lat, villes[ville].lon],{
                             icon: myIcon
-                        }); // Pas de addTo(macarte), l'affichage sera géré par la bibliothèque des clusters
+                        });
                         marker.bindPopup(ville);
                         markerClusters.addLayer(marker); // Nous ajoutons le marqueur aux groupes
                     }
@@ -117,7 +118,6 @@
                     initMap();
                 };
             </script>
-
         </div>
     </body>
 </html>
