@@ -1,0 +1,8 @@
+﻿  emission.cpp
+c:\users\febvin\source\repos\langlace\test\test\emission.cpp(33): error C2065: 'InfoTrame' : identificateur non déclaré
+c:\users\febvin\source\repos\langlace\test\test\emission.cpp(44): warning C4293: '>>' : compteur de décalage négatif ou trop important, comportement non défini
+c:\users\febvin\source\repos\langlace\test\test\emission.cpp(54): error C2819: le type 'QSqlDatabase' n'a pas d'opérateur 'operator ->' de membre surchargé
+  c:\qt\5.14.2\msvc2017_64\include\qtsql\qsqldriver.h(51): note: voir la déclaration de 'QSqlDatabase'
+  c:\users\febvin\source\repos\langlace\test\test\emission.cpp(54): note: voulez-vous utiliser '.' à la place ?
+c:\users\febvin\source\repos\langlace\test\test\emission.cpp(54): error C2039: 'InsertBDD' : n'est pas membre de 'QSqlDatabase'
+  c:\qt\5.14.2\msvc2017_64\include\qtsql\qsqldriver.h(51): note: voir la déclaration de 'QSqlDatabase'
