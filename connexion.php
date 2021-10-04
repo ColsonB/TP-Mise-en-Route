@@ -5,7 +5,7 @@
     $User = new user($BDD);
     
     if (isset($_SESSION['id'])){
-        header("Location: accueil.php");
+        header("Location: map.php");
     }
 ?>
 <!DOCTYPE html>

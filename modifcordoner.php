@@ -12,7 +12,7 @@
         header("Location: connexion.php");
     }
     if ($admin->getadmin() == 0){
-        header("Location: accueil.php");
+        header("Location: map.php");
     }
 ?>
 <!DOCTYPE html>
