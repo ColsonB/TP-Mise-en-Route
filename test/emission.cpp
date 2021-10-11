@@ -5,51 +5,71 @@
 #include <QRegExp>
 #include <qregularexpression.h>
 
+#include <qserialportinfo>
+#include <qserialport>
+#include <qdebug>
+#include <QRegExp>
+#include <QtSql/QtSql>
 
-Emission::Emission(QObject *parent)
-	: QObject(parent)
-{
+
+Emission::Emission(QObject *parent) : QObject(parent) {
+
 	port = new QSerialPort( this );
 	QObject::connect(port, SIGNAL(readyRead()), this, SLOT(onSerialPortReadyRead()));
-	port->setPortName("COM1");
+	port->setPortName("COM9");
 	port->open(QIODevice::ReadWrite);
-		port->setBaudRate(QSerialPort::Baud9600);
-		port->setDataBits(QSerialPort::DataBits::Data8);
-		port->setParity(QSerialPort::Parity::NoParity);
-		port->setStopBits(QSerialPort::StopBits::OneStop);
-		port->setFlowControl(QSerialPort::NoFlowControl);
+	port->setBaudRate(QSerialPort::Baud9600);
+	port->setDataBits(QSerialPort::DataBits::Data8);
+	port->setParity(QSerialPort::Parity::NoParity);
+	port->setStopBits(QSerialPort::StopBits::OneStop);
+	port->setFlowControl(QSerialPort::NoFlowControl);
+
+
+	QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
+	db.setHostName("192.168.64.50");
+	db.setUserName("superuser");
+	db.setPassword("superuser");
+	db.setDatabaseName("GPS");
+
+	if (db.open())
+	{
+		qDebug() << "Connexion réussie à " + db.hostName().toUtf8();
+	}
+	else
+	{
+		qDebug() << "La connexion a échouée !";
+	}
 }
 
 
 void Emission::onSerialPortReadyRead() {
 
-	QByteArray TrameRecu = port->readAll();
-	qDebug() << TrameRecu.size();
-	Trame = Trame + TrameRecu.toStdString().c_str();
-	qDebug() << Trame;
+	QByteArray TrameRecu = port->read(port->bytesAvailable());
+	QString str(TrameRecu);
+	Trame += str;
+
+	QRegExp startMatch("GPGGA(.+)");
+	QRegExp stopMatch("(\\*42)");
+	int startByte = startMatch.indexIn( Trame );
+
+	if ( startByte > -1 && stopMatch.indexIn( Trame, startByte + 1) > -1) {
+
+		QStringList split = Trame.split(',');
 
 
-	QRegExp regex("(.+)*0E");
-	qDebug() << regex.indexIn(Trame);
+		QRegExp regex("GPGGA,(.+)(\\*42)");
+		int test = regex.indexIn(Trame);
+		QStringList list = regex.capturedTexts();
+		Trame.replace(0, stopMatch.indexIn(Trame, startByte + 1), "");
+		// -- Découpe notre chaine à chaque virgules
+		QStringList data = list.at(1).split(',', Qt::SkipEmptyParts);
 
-	if (regex.indexIn(Trame) >> -1)
-	{
-		QStringList InfoTrame = Trame.split(QLatin1Char(','), Qt::SkipEmptyParts);
+		QString Longitude = data.at(1) // data.at( 1 )
+			, Latitude = data.at(3)
+			, Timestamp = data.at(0);
 
-		for (int i = 0; i < InfoTrame.size(); i++)
-		{
-			qDebug() << InfoTrame[i];
-
-		}
-
-		QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
-		db.setHostName("192.168.64.50");
-		db.setDatabaseName("GPS");
-		db.setUserName("root");
-		db.setPassword("root");
-		QSqlQuery query(db);
-
-		//QString InsertBDD = "INSERT INTO `gps`(`latitude`, `longitude`, `heure`, `altitude`) VALUES ('" + InfoTrame[2] + "','" + InfoTrame[4] + "','" + InfoTrame[1] + "','" + InfoTrame[9] + "')";
-
+		qDebug() << Latitude << Longitude;
+		QSqlQuery query("INSERT INTO `gps`(`latitude`, `longitude`, `heure`, `altitude`) VALUES ('32','32','32','32')", db);
 	}
+		// QSqlQuery query("INSERT INTO `gps`(`latitude`, `longitude`, `heure`, `altitude`) VALUES ('32','32','32','32')", db);
 }

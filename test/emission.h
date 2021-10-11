@@ -17,5 +17,4 @@ private:
 	QSerialPort * port;
 	QString Trame;
 	QSqlDatabase * db;
-
 };
