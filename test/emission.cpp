@@ -33,11 +33,11 @@ Emission::Emission(QObject *parent) : QObject(parent) {
 
 	if (db.open())
 	{
-		qDebug() << "Connexion réussie à " + db.hostName().toUtf8();
+		qDebug() << "Connexion réussie";
 	}
 	else
 	{
-		qDebug() << "La connexion a échouée !";
+		qDebug() << "Connexion échoué";
 	}
 }
 
@@ -69,7 +69,10 @@ void Emission::onSerialPortReadyRead() {
 			, Timestamp = data.at(0);
 
 		qDebug() << Latitude << Longitude;
-		QSqlQuery query("INSERT INTO `gps`(`latitude`, `longitude`, `heure`, `altitude`) VALUES ('32','32','32','32')", db);
+		QSqlQuery query;
+		query.exec("INSERT INTO `gps`(`latitude`, `longitude`, `heure`) VALUES ('"+ Latitude +"','"+ Longitude +"','"+ Timestamp +"')");
+		
+		
 	}
-		// QSqlQuery query("INSERT INTO `gps`(`latitude`, `longitude`, `heure`, `altitude`) VALUES ('32','32','32','32')", db);
+	
 }
