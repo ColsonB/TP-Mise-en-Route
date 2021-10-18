@@ -28,6 +28,8 @@ Emission::Emission(QObject *parent) : QObject(parent) {
 	port->setStopBits(QSerialPort::StopBits::OneStop);
 	port->setFlowControl(QSerialPort::NoFlowControl);
 
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 	// Initialisation connection Base de donnée
 	QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
 	db.setHostName("192.168.64.50"); // Adresse VM base de donnée
@@ -57,6 +59,9 @@ void Emission::onSerialPortReadyRead() {
 
 	int startByte = startMatch.indexIn( Trame ); // J'utilise le début du regex pour charcher la trame complète la plus récente
 
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 	if ( startByte > -1 && stopMatch.indexIn( Trame, startByte + 1) > -1) {
 
 		QStringList split = Trame.split(','); // Je prépare un découpage à chaque " , "
@@ -73,15 +78,52 @@ void Emission::onSerialPortReadyRead() {
 		
 		QStringList data = list.at(1).split(',', Qt::SkipEmptyParts);// Découpe de la chaine à chaque virgules
 
-		QString Longitude = data.at(1) // Case 2 = Longitude Trame
-			, Latitude = data.at(3)	// Case 4 = Latitude Trame
+
+		QString Latitude = data.at(1) // Case 2 = Longitude Trame
+			, Longitude = data.at(3)	// Case 4 = Latitude Trame
 			, Timestamp = data.at(0);	// Case 1 = Heure-Minute-Seconde Trame
 
-		qDebug() << Latitude << Longitude;
+		//qDebug() << Latitude << Longitude;
 
-		QSqlQuery query;
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+		int LongitudeFausse = Longitude.indexOf("."), LatitudeFausse = Latitude.indexOf(".");
+			
+		// Je décale mes valeurs de deux cran afin d'avoir des longeurs valide car valeur trop grande
+		Longitude.insert(LongitudeFausse - 2, ","); 
+		Latitude.insert(LatitudeFausse - 2, ",");
+
+
+		// Conversion des valeurs en degré/min
+		QStringList LatitudeSplit = Latitude.split(","); // Je sépare mon entier et mon décimal pour les traiter séparément
+
+		double LatitudeDecimal = LatitudeSplit.at(1).toDouble() / 60; // LatitudeSplit.at(1) = Entier Latitude non traité
+		double LatitudeEntier = LatitudeSplit.at(0).toDouble();		// LatitudeSplit.at(0) = Décimal Latitude non traité
+		double LatitudeRelle = LatitudeDecimal + LatitudeEntier;
+
+
+
+		// La longitude est au même format que la Latitude donc la conversion est la même
+		QStringList LongitudeSplit = Longitude.split(",");
+
+		double LongitudeDecimal = LongitudeSplit.at(1).toDouble() / 60;
+		double LongitudeEntier = LongitudeSplit.at(0).toDouble();
+		double LongitudeRelle = LongitudeDecimal + LongitudeEntier;
+
+		qDebug() << LatitudeDecimal << "+" << LatitudeEntier << "=" << LatitudeRelle << "\n";
+		qDebug() << LongitudeDecimal << "+" << LongitudeEntier << "=" << LongitudeRelle << "\n";
+
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		
 		// Envoie des donnée en Base de donnée grâce a une querry
-		query.exec("INSERT INTO `gps`(`latitude`, `longitude`, `heure`) VALUES ('"+ Latitude +"','"+ Longitude +"','"+ Timestamp +"')");
+		QSqlQuery query("INSERT INTO `gps`(`latitude`, `longitude`, `heure`) VALUES (?,?,'" + Timestamp + "')");
+		
+		// Je fais un addBindValue pour éviter une erreur : l'expression doit être de type intégral ou enum non délimité
+		query.addBindValue(LatitudeRelle);
+		query.addBindValue(LongitudeRelle);
+		query.exec();
 		
 		
 	}
