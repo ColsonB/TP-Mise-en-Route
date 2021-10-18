@@ -20,7 +20,7 @@ Emission::Emission(QObject *parent) : QObject(parent) {
 	
 	port->setPortName("COM9");  // Port d'écoute
 
-	// Paramètre de la communication
+	// Paramètre de la communication : Cours communication série avec QT de Mr.Gremont
 	port->open(QIODevice::ReadWrite);
 	port->setBaudRate(QSerialPort::Baud9600);
 	port->setDataBits(QSerialPort::DataBits::Data8);
